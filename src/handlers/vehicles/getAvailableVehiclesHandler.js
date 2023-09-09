@@ -23,41 +23,44 @@ const getAvailableVehiclesHandler = async (query) => {
             passengersMax 
         } = query 
 
-        // validate dates
-        if (!startDate || !finishDate) {
-            throw new CustomError('startDate and finishDate are required query parameters', 400)
-        }
+        let busyCars = []
 
-        const regexPatternForDates = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
-        if (!regexPatternForDates.test(startDate) || !regexPatternForDates.test(finishDate)) {
-            throw new CustomError('startDate and finishDate must be in the format AAAA-MM-DD', 400)
-        }
-        /////////////
+        if (startDate && finishDate) {
+            // validate dates
+            if (!startDate || !finishDate) {
+                throw new CustomError('startDate and finishDate are required query parameters', 400)
+            }
+    
+            const regexPatternForDates = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+            if (!regexPatternForDates.test(startDate) || !regexPatternForDates.test(finishDate)) {
+                throw new CustomError('startDate and finishDate must be in the format AAAA-MM-DD', 400)
+            }
+            /////////////
 
-        // make query for Bookings intersecting the desired period defined by startDate and finishDate ///
-        const busy = await Booking.findAll({
-            where: {
-                stateBooking: {
-                    [Op.ne]: 'canceled'
+            // make query for Bookings intersecting the desired period defined by startDate and finishDate ///
+            const busy = await Booking.findAll({
+                where: {
+                    stateBooking: {
+                        [Op.ne]: 'canceled'
+                    },
+                    startDate: {
+                        [Op.lte]: new Date(finishDate)
+                    },
+                    finishDate: {
+                        [Op.gte]: new Date(startDate)
+                    }
                 },
-                startDate: {
-                    [Op.lte]: new Date(finishDate)
-                },
-                finishDate: {
-                    [Op.gte]: new Date(startDate)
-                }
-            },
-            attributes: ['VehicleId'],
-        })
-        let busyCars = busy.map(item => item.VehicleId).filter(item => item !== null)
-        /////////////////////////////
+                attributes: ['VehicleId'],
+            })
+            /////////////////////////////
+            busyCars = busy.map(item => item.VehicleId).filter(item => item !== null)
+        }
 
         // setup where for database query ////////
         const where = {
-            domain: {
-                [Op.notIn]: busyCars
-            }
+            isActive: true
         }
+        if (busyCars.length) { where.domain = { [Op.notIn]: busyCars } }
         if (type) { where.type = type }
         if (transmission) { where.transmission = transmission }
         if (brand) { where.brand = brand }
@@ -94,7 +97,7 @@ const getAvailableVehiclesHandler = async (query) => {
         ////////////////
 
         // setup order for database query ////
-        const order = [[(orderBy) ? orderBy : 'pricePerDay', (direction) ? direction : 'ASC']]
+        const order = [[(orderBy) ? orderBy : 'pricePerDay', (direction) ? direction : 'DESC']]
         ////////////////////
 
         // make query for Vehicles that match filter criteria and are not in busyCars array
@@ -155,6 +158,14 @@ const getAvailableVehiclesHandler = async (query) => {
         const prev = (page === 1) ? null : prevString  
         ///////////////////////////////////////
 
+        // available option filters
+        const brands = Array.from(new Set(results.map(car => car.brand)));
+        const models = Array.from(new Set(results.map(car => car.model)));
+        const transmissions = Array.from(new Set(results.map(car => car.transmission)));
+        const fuelTypes = Array.from(new Set(results.map(car => car.fuel)));
+        const passengers = Array.from(new Set(results.map(car => car.passengers)));
+        /////////////////////////
+
         // configure response /////////
         const response = {
             currentPage: page,
@@ -162,7 +173,8 @@ const getAvailableVehiclesHandler = async (query) => {
             next,
             prev,
             resultsCount: results.length,
-            results: results.slice(showFrom, showTo)
+            results: results.slice(showFrom, showTo),
+            availableFilterOptions: { brands, models, transmissions, fuelTypes, passengers }
         }
 
         return response

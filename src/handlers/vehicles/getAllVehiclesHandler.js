@@ -100,8 +100,8 @@ const getAllVehiclesHandler = async (query) => {
         const showFrom = (offset > results.length) ? 0 : offset
         const showTo = (showFrom + limit > results.length) ? results.length : (showFrom + limit)
         
-        let nextString = '/available?'
-        let prevString = '/available?'
+        let nextString = '/vehicles?'
+        let prevString = '/vehicles?'
         for (let prop in query) {
             if (nextString.at(-1) !== '?') { nextString += '&' }
             if (prevString.at(-1) !== '?') { prevString += '&' }
@@ -118,6 +118,14 @@ const getAllVehiclesHandler = async (query) => {
         const prev = (page === 1) ? null : prevString  
         ///////////////////////////////////////
 
+        // available option filters
+        const brands = Array.from(new Set(results.map(car => car.brand)));
+        const models = Array.from(new Set(results.map(car => car.model)));
+        const transmissions = Array.from(new Set(results.map(car => car.transmission)));
+        const fuelTypes = Array.from(new Set(results.map(car => car.fuel)));
+        const passengers = Array.from(new Set(results.map(car => car.passengers))).sort();
+        /////////////////////////
+
         // configure response /////////
         const response = {
             currentPage: page,
@@ -125,7 +133,8 @@ const getAllVehiclesHandler = async (query) => {
             next,
             prev,
             resultsCount: results.length,
-            results: results.slice(showFrom, showTo)
+            results: results.slice(showFrom, showTo),
+            availableFilterOptions: { brands, models, transmissions, fuelTypes, passengers }
         }
 
         return response

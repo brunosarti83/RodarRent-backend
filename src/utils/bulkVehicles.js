@@ -8,7 +8,9 @@ const carTypes = [
         type: 'SUV',
         passengers: 7,
         pricePerDay: 180.00,
-        image: "https://th.bing.com/th/id/R.5ed33ef2a931b94674e48544ea9dfa0d?rik=jf2PHaELGho%2bcA&pid=ImgRaw&r=0"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694021989/xzyg9ivez32dcevybezu.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Mercedes Benz',
@@ -16,7 +18,9 @@ const carTypes = [
         type: 'SUV',
         passengers: 8,
         pricePerDay: 210.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693829158/g2f6vvrw1d86tqjonr70.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022209/eyr1dsckfgczssg5p6ic.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Mercedes Benz',
@@ -24,7 +28,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 205.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693828820/svlnibspwjirmfgg1cgc.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022469/q3ujn0o4hty1xguovsmj.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Toyota',
@@ -32,7 +38,9 @@ const carTypes = [
         type: 'pickup',
         passengers: 4,
         pricePerDay: 180.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693828678/apuuaeahl2oi13o8yojk.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022581/e1vuucwfidjzce5msnfz.webp',
+        transmission: 'manual',
+        fuel: 'diesel'
     },
     {
         brand: 'Chevrolet',
@@ -40,7 +48,9 @@ const carTypes = [
         type: 'sport',
         passengers: 2,
         pricePerDay: 240.00,
-        image: "https://freepngimg.com/thumb/chevrolet/32550-4-chevrolet-camaro-transparent.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022671/eszsbq2iedatkbexiytr.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
     {
         brand: 'Jeep',
@@ -48,7 +58,9 @@ const carTypes = [
         type: 'SUV',
         passengers: 6,
         pricePerDay: 205.00,
-        image: "https://th.bing.com/th/id/R.bf5fd5a4b04fe359494885e5cfbbebc1?rik=1E4hdPBrMfy4mg&pid=ImgRaw&r=0"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022864/u9vbnf66yjetsmeqkr3t.webp',
+        transmission: 'automatic',
+        fuel: 'diesel'
     },
     {
         brand: 'Chevrolet',
@@ -56,7 +68,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 142.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693835070/bjvci3s6cyqxmsexoptr.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694022961/jydus2voxms8gcwjfoef.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
     {
         brand: 'Volkswagen',
@@ -64,7 +78,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 155.00,
-        image: "https://freewayservicos.com/wp-content/uploads/2016/08/3.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023059/w0tkgqwbj0dpffgg7wox.webp',
+        transmission: 'manual',
+        fuel: 'diesel'
     },
     {
         brand: 'Honda',
@@ -72,7 +88,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 160.00,
-        image: "https://th.bing.com/th/id/R.e71327056a0b3fd72772d82185a7161c?rik=fh9bNZmRZZFA8Q&pid=ImgRaw&r=0"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023131/j9nvzrxexzgsf7glyogn.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Volkswagen',
@@ -80,7 +98,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 158.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693827462/tscc0cmxzezedxggxkvy.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023227/mk3itvpt513xictubqle.webp',
+        transmission: 'automatic',
+        fuel: 'diesel'
     },
     {
         brand: 'Tesla',
@@ -88,7 +108,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 260.00,
-        image: "https://www.vippng.com/png/full/44-440423_model-png.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023292/ukx5aeeuofusjgtqhv2q.webp',
+        transmission: 'automatic',
+        fuel: 'electric'
     },
     {
         brand: 'Fiat',
@@ -96,7 +118,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 136.00,
-        image: "https://motormania.com.mx/wp-content/uploads/2021/08/fiat-trekking-2021-cover_rojo.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023351/uxac2kby1uplmqjjtz14.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
     {
         brand: 'Mercedes Benz',
@@ -104,7 +128,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 194.00,
-        image: "https://www.pikpng.com/pngl/b/31-313751_2017-mercedes-benz-s-class-s550-sedan-cover.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023457/oquxeq3xshvchi7xbrcp.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Ford',
@@ -112,7 +138,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 130.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693826529/vrq2ujlylie6gecixr0b.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023524/aylflnhvdh6wdyxb5lpa.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
     {
         brand: 'Audi',
@@ -120,7 +148,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 212.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693826124/ipctogghnbilgx4yuwau.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694023585/mjjohf5x89gjx1e5vedp.webp',
+        transmission: 'automatic',
+        fuel: 'diesel'
     },
     {
         brand: 'Ford',
@@ -128,7 +158,9 @@ const carTypes = [
         type: 'sport',
         passengers: 4,
         pricePerDay: 238.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693825965/athm36fjdzbjjut6t9r1.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024117/xk0b24dciavdjzakwoqq.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
     {
         brand: 'Mercedes Benz',
@@ -136,7 +168,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 198.00,
-        image: "https://www.motortrend.com/uploads/sites/10/2019/10/2020-mercedes-benz-c-class-c300-sedan-angular-front.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024177/gz7jmxuz9kln1mhhvdgj.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Volkswagen',
@@ -144,7 +178,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 170.00,
-        image: "https://www.motortrend.com/uploads/sites/10/2016/10/2017-volkswagen-passat-sel-premium-auto-sedan-angular-front.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024239/mndcicyj71vvc61kjyxw.webp',
+        transmission: 'manual',
+        fuel: 'diesel'
     },
     {
         brand: 'Audi',
@@ -152,7 +188,9 @@ const carTypes = [
         type: 'sedan',
         passengers: 4,
         pricePerDay: 175.00,
-        image: "https://res.cloudinary.com/daiztctac/image/upload/v1693825167/p4gyfhmy4cpikskrhsvs.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024355/auqky1x4fj6niflcyslh.webp',
+        transmission: 'automatic',
+        fuel: 'diesel'
     },
     {
         brand: 'Nissan',
@@ -160,7 +198,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 152.00,
-        image: "https://inventory-dmg.assets-cdk.com/ChromeColorMatch/us/TRANSPARENT_cc_2020NIS260017_01_1280_XAH.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024464/fihzmzje6qgfmy1z2czp.webp',
+        transmission: 'automatic',
+        fuel: 'gas'
     },
     {
         brand: 'Toyota',
@@ -168,7 +208,9 @@ const carTypes = [
         type: 'compact',
         passengers: 4,
         pricePerDay: 140.00,
-        image: "https://www.motortrend.com/uploads/sites/10/2016/12/2017-toyota-yaris-se-5-door-hatchback-angular-front.png"
+        image: 'https://res.cloudinary.com/daiztctac/image/upload/v1694024785/r73c34vu2zmo3otkjsgt.webp',
+        transmission: 'manual',
+        fuel: 'gas'
     },
 ]
 
@@ -183,15 +225,15 @@ const loadCars = async (nCars) => {
         const newCar = { ...carTypes[carTypeIndex] }
         newCar.domain = faker.vehicle.vrm()
         newCar.year = years[Math.floor(Math.random()*years.length)]
-        newCar.transmission = transmissions[Math.floor(Math.random()*transmissions.length)]
-        if (newCar.brand === 'Tesla') {
-            newCar.fuel = 'electric'
-        } else if (newCar.model === 'Camaro' || newCar.model === 'Mustang') {
-            newCar.fuel = 'gas'
-        } else {
-            newCar.fuel = fuels[Math.floor(Math.random()*fuels.length)]
-        }
-        newCar.availability = true
+        //newCar.transmission = transmissions[Math.floor(Math.random()*transmissions.length)]
+        // if (newCar.brand === 'Tesla') {
+        //     newCar.fuel = 'electric'
+        // } else if (newCar.model === 'Camaro' || newCar.model === 'Mustang') {
+        //     newCar.fuel = 'gas'
+        // } else {
+        //     newCar.fuel = fuels[Math.floor(Math.random()*fuels.length)]
+        // }
+        //newCar.availability = true
         load.push(newCar)
     }
     const { data } = await axios.post('http://localhost:3001/vehicles', load)
@@ -200,7 +242,7 @@ const loadCars = async (nCars) => {
     }
 }
 // execution of load(nCars)
-loadCars(200)
+loadCars(150)
 ////////////
 
 //module.exports = loadCars;

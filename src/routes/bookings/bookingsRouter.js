@@ -20,7 +20,7 @@ router.get("/hc", (req, res) => {
 });
 router.post("/bookings", postBookingValidate, createBooking);
 router.get("/bookings", getAllBookings);
-//router.get("/bookings/filter", getFilteredBookings);
+router.get("/booking/filter", getFilteredBookings);
 router.get("/bookings/:id", getBookingById);
 router.put("/bookings/:id", updateBooking);
 router.delete("/bookings/:id", deleteBookingValidation, deleteBooking);

@@ -11,6 +11,15 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      idMP: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'The idMP field cannot be empty',
+          },
+        },
+      },
       amount: {
         type: DataTypes.FLOAT,
         allowNull: false,
@@ -21,7 +30,7 @@ module.exports = (sequelize) => {
         },
       },
       date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -34,7 +43,7 @@ module.exports = (sequelize) => {
         },
       },
       method: {
-        type: DataTypes.ENUM('credit card', 'bank transfer'),
+        type: DataTypes.ENUM('credit_card', 'account_money', 'ticket'),
         allowNull: false,
         validate: {
           notEmpty: {
@@ -43,7 +52,16 @@ module.exports = (sequelize) => {
         },
       },
       status: {
-        type: DataTypes.ENUM('paid', 'pending', 'deleted'),
+        type: DataTypes.ENUM(
+          'pending',
+          'approved',
+          'rejected',
+          'cancelled',
+          'in process',
+          'refunded',
+          'money in account',
+          'error',
+        ),
         allowNull: false,
         defaultValue: 'pending',
         validate: {
@@ -51,6 +69,10 @@ module.exports = (sequelize) => {
             msg: 'The status field cannot be empty',
           },
         },
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     { timestamps: false },

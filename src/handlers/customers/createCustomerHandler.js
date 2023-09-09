@@ -1,6 +1,6 @@
 const { Customer } = require('../../db');
 const CustomError = require('../../utils/customError');
-const bcrypt = require('bcrypt');
+const { hashPassword } = require('../../utils/passwordHasher');
 
 const createCustomerHandler = async (data) => {
   const {
@@ -17,6 +17,8 @@ const createCustomerHandler = async (data) => {
     password,
   } = data;
     try {
+      const hashedPassword = await hashPassword(password)
+      console.log(hashedPassword);
       const [customer, created] = await Customer.findOrCreate({
         where: { personalId },
         defaults: {
@@ -29,7 +31,7 @@ const createCustomerHandler = async (data) => {
           zipCode,
           phoneNumber,
           email,
-          password,
+          password: hashedPassword,
         },
         // include: [
         //   {

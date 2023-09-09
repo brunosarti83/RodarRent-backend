@@ -6,6 +6,7 @@ const {
     getAllVehicles,
     updateVehicle,
     getAllAvailable,
+    deleteVehicleById,
 } = require('../../controllers/vehicles');
   
 const {
@@ -19,5 +20,6 @@ router.get("/vehicles/:id", getVehicleById);
 router.get("/vehicles", getAllVehicles);
 router.put("/vehicles", updateVehicle);
 router.get("/available", getAllAvailable);
+router.delete("/vehicles/:id", deleteVehicleById);
   
 module.exports = router;

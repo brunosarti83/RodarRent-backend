@@ -14,18 +14,18 @@ for (let i = 0; i < 40; i++) {
     birthDate: faker.date.birthdate().toISOString().split('T')[0],
     address: faker.address.streetAddress(),
     city: faker.address.city(),
-    // country: faker.address.country(),
-    country: 'Argentina',
+    country: faker.address.country(),
+    // country: 'Argentina',
     zipCode: faker.address.zipCode(),
     phoneNumber: faker.phone.number(),
     email: faker.internet.email(name),
-    password: bcrypt.hashSync(faker.internet.password(),saltRounds)
+    password: faker.internet.password()
   };
   customers.push(customer);
 }
-// const jsonCustomers = JSON.stringify(customers, null, 2);
-// fs.writeFileSync('customers.json', jsonCustomers);
-// console.log('Customers data has been written to customers.json');
+const jsonCustomers = JSON.stringify(customers, null, 2);
+fs.writeFileSync('customers.json', jsonCustomers);
+console.log('Customers data has been written to customers.json');
 //esta línea me hashea el pass que le paso como arg
-console.log(bcrypt.hashSync('Juancho023',saltRounds));
+// console.log(bcrypt.hashSync('Juancho023',saltRounds));
 module.exports = customers;
