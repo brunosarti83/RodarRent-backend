@@ -7,6 +7,7 @@ const {
     updateVehicle,
     getAllAvailable,
     deleteVehicleById,
+    getVehicleAvailabilityById,
 } = require('../../controllers/vehicles');
   
 const {
@@ -19,6 +20,7 @@ router.post("/vehicles", postVehiclesValidate, createVehicles);
 router.get("/vehicles/:id", getVehicleById);
 router.get("/vehicles", getAllVehicles);
 router.put("/vehicles", updateVehicle);
+router.get("/available/:id/:startDate/:finishDate", getVehicleAvailabilityById)
 router.get("/available", getAllAvailable);
 router.delete("/vehicles/:id", deleteVehicleById);
   

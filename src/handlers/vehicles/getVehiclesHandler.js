@@ -1,9 +1,10 @@
 const { Vehicle } = require('../../db');
 const CustomError = require('../../utils/customError');
 
-const getAllVehiclesHandler = async (query) => {
+const getVehiclesHandler = async (query) => {
     try {
-        let { 
+        let {
+            id, 
             limit, 
             offset,  
             orderBy, 
@@ -21,6 +22,7 @@ const getAllVehiclesHandler = async (query) => {
 
         // setup where for database query ////////
         const where = {}
+        if (id) { where.id = id }
         if (type) { where.type = type }
         if (transmission) { where.transmission = transmission }
         if (brand) { where.brand = brand }
@@ -60,27 +62,13 @@ const getAllVehiclesHandler = async (query) => {
         const order = [[(orderBy) ? orderBy : 'pricePerDay', (direction) ? direction : 'DESC']]
         ////////////////////
 
-        // make query for Vehicles that match filter criteria and are not in busyCars array
-        const availableVehicles = await Vehicle.findAll({
+        // make query for Vehicles that match filter criteria
+        const results = await Vehicle.findAll({
             where,
             order,
-            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image']
+            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'isActive']
         })
         ///////////////////
-        
-        // filter results so that's there is only one Vehicle of each (model => transmission => fuel => price) combination ////
-        const oneOfEachType = []
-        availableVehicles.forEach(availableCar => {
-            const { domain, brand, model, type, passengers, transmission, fuel, pricePerDay, image } = availableCar
-            const alreadyIn = oneOfEachType.filter(car => { 
-                return (car.brand === brand && car.model === model && car.transmission === transmission && car.fuel === fuel && car.pricePerDay === pricePerDay)
-            })
-            if (!alreadyIn.length) {
-                oneOfEachType.push(availableCar)
-            }
-        })
-        const results = oneOfEachType;
-        ////////////////////////
 
         // set pagination variables //////////
         if (limit) { 
@@ -144,4 +132,4 @@ const getAllVehiclesHandler = async (query) => {
     }
 }
 
-module.exports = getAllVehiclesHandler;
+module.exports = getVehiclesHandler;

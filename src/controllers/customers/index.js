@@ -6,6 +6,7 @@ const getCustomerById = require('./getCustomerById');
 const getFilteredCustomers = require('./getFilteredCustomers');
 const updateCustomer = require('./updateCustomer');
 const attemptLogin = require('./attemptLogin');
+const updatePassword = require('./updatePassword')
 
 module.exports = {
   bulkCreateCustomers,
@@ -16,4 +17,5 @@ module.exports = {
   getFilteredCustomers,
   updateCustomer,
   attemptLogin,
+  updatePassword
 };

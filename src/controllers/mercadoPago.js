@@ -4,29 +4,35 @@ require('dotenv').config();
 const { Booking } = require('../db');
 
 const createOrder = async (req, res) => {
-  const { ACCESS_TOKEN } = process.env;
+  const { ACCESS_TOKEN, MP_URL } = process.env;
 
   mercadopago.configure({
     access_token: ACCESS_TOKEN,
   });
   // const { product } = req.body;
+  const product = {
+    id: '11f0845e-b82c-440b-bf37-55ffb587c821',
+    title: 'rent Car test', // el nombre para el servicio del alquiler del auto
+    quantity: 7,
+    currency_id: 'ARS',
+    unit_price: 200,
+  };
 
   const backUrls = {
-    success: 'http://localhost:3001/success',
-    failure: 'http://localhost:3001/failure',
-    pending: 'http://localhost:3001/pending',
+    success: `${MP_URL}/success`,
+    failure: `${MP_URL}/failure`,
+    pending: `${MP_URL}/pending`,
   };
-  const notificationUrl =
-    'https://5dab-2800-e2-a200-192-a050-3edf-9f4b-c874.ngrok-free.app/webhook';
+  const notificationUrl = `${MP_URL}/webhook`;
 
   const preference = {
     items: [
       {
-        id: '95765850-8b11-4098-a021-e9633f9c6106', // es el id de la reserva
-        title: 'rent Car test', // el nombre para el servicio del alquiler del auto
-        quantity: 1,
-        currency_id: 'ARS',
-        unit_price: 1500,
+        id: product.id, // es el id de la reserva
+        title: product.title,
+        quantity: product.quantity,
+        currency_id: product.currency_id,
+        unit_price: product.unit_price,
       },
     ],
     back_urls: backUrls,
@@ -35,7 +41,7 @@ const createOrder = async (req, res) => {
 
   try {
     const booking = await Booking.findOne({
-      where: { id: '95765850-8b11-4098-a021-e9633f9c6106', PayId: null },
+      where: { id: product.id, PayId: null },
     }); // cambiar id por valor dinámico
 
     if (!booking) {

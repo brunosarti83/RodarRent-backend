@@ -3,8 +3,10 @@
 /* eslint-disable default-case */
 const mercadopago = require('mercadopago');
 const axios = require('axios');
+require('dotenv').config();
 
 const receiveWebhook = async (req, res) => {
+  const { MP_URL } = process.env;
   try {
     // console.log('notification payment received:', req.query);
     // console.log(req.query);
@@ -29,7 +31,7 @@ const receiveWebhook = async (req, res) => {
         // console.log(pay);
 
         // Enviar el objeto JSON como parte del cuerpo de la solicitud POST
-        const crearPagoUrl = 'http://localhost:3001/payments'; // Reemplaza con la URL correcta
+        const crearPagoUrl = `${MP_URL}/payments`; // Reemplaza con la URL correcta
 
         const response = await axios.post(crearPagoUrl, pay);
         // console.log('Respuesta de la creación de pago:', response.data);
@@ -37,6 +39,7 @@ const receiveWebhook = async (req, res) => {
         const merchantO = await mercadopago.merchant_orders.findById(
           payment.body.order.id,
         );
+        // console.log(merchantO);
         break;
       case 'merchant_order':
         const orderId = query.id;

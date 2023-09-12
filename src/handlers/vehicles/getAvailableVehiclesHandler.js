@@ -19,6 +19,7 @@ const getAvailableVehiclesHandler = async (query) => {
             fuel, 
             pricePerDayMin, 
             pricePerDayMax,
+            passengers,
             passengersMin,
             passengersMax 
         } = query 
@@ -60,12 +61,13 @@ const getAvailableVehiclesHandler = async (query) => {
         const where = {
             isActive: true
         }
-        if (busyCars.length) { where.domain = { [Op.notIn]: busyCars } }
+        if (busyCars.length) { where.id = { [Op.notIn]: busyCars } }
         if (type) { where.type = type }
         if (transmission) { where.transmission = transmission }
         if (brand) { where.brand = brand }
         if (model) { where.model = model }
         if (fuel) { where.fuel = fuel }
+        if (passengers) { where.passengers = passengers }
         if (pricePerDayMin && pricePerDayMax) {
             where.pricePerDay = {
                 [Op.gte] : Number(pricePerDayMin),
@@ -111,7 +113,7 @@ const getAvailableVehiclesHandler = async (query) => {
         // filter results so that's there is only one Vehicle of each (model => transmission => fuel => price) combination ////
         const oneOfEachType = []
         availableVehicles.forEach(availableCar => {
-            const { domain, brand, model, type, passengers, transmission, fuel, pricePerDay, image } = availableCar
+            const { brand, model, type, passengers, transmission, fuel, pricePerDay, image } = availableCar
             const alreadyIn = oneOfEachType.filter(car => { 
                 return (car.brand === brand && car.model === model && car.transmission === transmission && car.fuel === fuel && car.pricePerDay === pricePerDay)
             })
@@ -163,7 +165,7 @@ const getAvailableVehiclesHandler = async (query) => {
         const models = Array.from(new Set(results.map(car => car.model)));
         const transmissions = Array.from(new Set(results.map(car => car.transmission)));
         const fuelTypes = Array.from(new Set(results.map(car => car.fuel)));
-        const passengers = Array.from(new Set(results.map(car => car.passengers)));
+        const passengersCapacities = Array.from(new Set(results.map(car => car.passengers))).sort();
         /////////////////////////
 
         // configure response /////////
@@ -174,7 +176,7 @@ const getAvailableVehiclesHandler = async (query) => {
             prev,
             resultsCount: results.length,
             results: results.slice(showFrom, showTo),
-            availableFilterOptions: { brands, models, transmissions, fuelTypes, passengers }
+            availableFilterOptions: { brands, models, transmissions, fuelTypes, passengers: passengersCapacities }
         }
 
         return response

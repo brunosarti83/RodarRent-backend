@@ -8,6 +8,7 @@ const {
   getAllCustomers,
   getFilteredCustomers,
   updateCustomer,
+  updatePassword,
   getCustomerById,
   deleteCustomerById,
 } = require('../../controllers/customers');
@@ -16,6 +17,7 @@ const {
   createCustomerValidation,
   getCustomerByIdValidation,
   deleteCustomerByIdValidation,
+  updatePasswordValidation,
 } = require('../../middlewares/customers');
 
 const { isLoggedIn,loginSuccess, loginFailure, googleCallback, google, logout } = require('../../controllers/customers/googleOauth20');
@@ -29,6 +31,7 @@ router.get("/customers/filter", getFilteredCustomers);
 router.get("/customers/:id", getCustomerByIdValidation, getCustomerById);
 router.post("/customers/login", attemptLogin);
 router.put("/customers", createCustomerValidation, updateCustomer);
+router.put("/customers/updatePassword", updatePasswordValidation, updatePassword);
 router.delete("/customers/:id",deleteCustomerByIdValidation,deleteCustomerById);
 
 //para google oauth20:

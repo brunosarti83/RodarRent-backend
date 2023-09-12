@@ -18,7 +18,6 @@ const createCustomerHandler = async (data) => {
   } = data;
     try {
       const hashedPassword = await hashPassword(password)
-      console.log(hashedPassword);
       const [customer, created] = await Customer.findOrCreate({
         where: { personalId },
         defaults: {

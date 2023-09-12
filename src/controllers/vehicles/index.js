@@ -4,6 +4,7 @@ const getAllVehicles = require('./getAllVehicles');
 const getVehicleById = require('./getVehicleById');
 const updateVehicle = require('./updateVehicle');
 const deleteVehicleById = require('./deleteVehicleById');
+const getVehicleAvailabilityById = require('./getVehicleAvailabilityById');
 
 module.exports = {
   createVehicles,
@@ -12,4 +13,5 @@ module.exports = {
   getVehicleById,
   updateVehicle,
   deleteVehicleById,
+  getVehicleAvailabilityById,
 };

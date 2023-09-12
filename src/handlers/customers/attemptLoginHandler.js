@@ -10,7 +10,7 @@ const attemptLoginHandler = async (email, password) => {
     if (!customer) {
       throw new CustomError(`There's no customer matching email ${email}`, 404);
     }
-    const passwordMatch = comparePassword(password, customer.password);
+    const passwordMatch = await comparePassword(password, customer.password);
     if (!passwordMatch) {
       throw new CustomError(`Incorrect password for email ${email}`, 401); // Use 401 for authentication failure.
     }
