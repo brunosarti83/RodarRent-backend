@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/createorder', createOrder);
 // si el pago se aprueba deberia enviarlo de vuelta a la pagina RodarRent
-router.get('/success', (req, res) => res.send('Success Order'));
+router.get('/success', (req, res) => res.redirect(`${process.env.CLIENT_URL}/cars`));
 
 router.get('/failure', (req, res) => res.send('Failure'));
 
