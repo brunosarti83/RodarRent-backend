@@ -9,13 +9,13 @@ const createOrder = async (req, res) => {
   mercadopago.configure({
     access_token: ACCESS_TOKEN,
   });
-  // const { product } = req.body;
+  const { query } = req;
   const product = {
-    id: '11f0845e-b82c-440b-bf37-55ffb587c821',
-    title: 'rent Car test', // el nombre para el servicio del alquiler del auto
-    quantity: 7,
-    currency_id: 'ARS',
-    unit_price: 200,
+    id: query.id,
+    title: query.title, // el nombre para el servicio del alquiler del auto
+    quantity: parseInt(query.quantity),
+    currency_id: query.currency_id,
+    unit_price: parseFloat(query.unit_price),
   };
 
   const backUrls = {
@@ -52,7 +52,7 @@ const createOrder = async (req, res) => {
     const response = await mercadopago.preferences.create(preference);
     // console.log(response.body.items);
     const payLink = response.body.init_point;
-    res.send(`<a href=${payLink}>Ir a Pagar</a>`);
+    res.send(payLink);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
