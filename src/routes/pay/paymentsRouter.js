@@ -21,7 +21,7 @@ const router = Router();
 
 router.get('/hc', (req, res) => {
   // healthcheck
-  res.status(200).send('Server up');
+  res.status(200).send('OK');
 });
 
 router.post('/payments', postPayValidate, createPay);

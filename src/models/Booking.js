@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       stateBooking: {
-        type: DataTypes.ENUM("pending", "inProcess", "completed", "canceled"),
+        type: DataTypes.ENUM("pending", "confirmed", "completed", "canceled"),
         allowNull: false,
         defaultValue: "pending",
       },
@@ -37,12 +37,12 @@ module.exports = (sequelize) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      isDeleted: {
+      isActive: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       },
     },
+
     {
       timestamps: false,
     }

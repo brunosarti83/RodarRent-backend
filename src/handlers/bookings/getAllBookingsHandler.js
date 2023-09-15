@@ -3,7 +3,7 @@ const { Booking } = require("../../db");
 const getAllBookingsHandler = async () => {
   const bookings = await Booking.findAll({
     where: {
-      isDeleted: false,
+      isActive: false,
     },
   });
   return bookings;
