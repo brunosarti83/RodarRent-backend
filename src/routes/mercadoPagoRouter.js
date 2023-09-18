@@ -1,16 +1,19 @@
-const { Router } = require('express');
-const createOrder = require('../controllers/mercadoPago');
-const receiveWebhook = require('../controllers/receiveWebhook');
-const { Booking, Pay } = require('../db');
-require('dotenv').config();
+const { Router } = require("express");
+const createOrder = require("../controllers/mercadoPago");
+const receiveWebhook = require("../controllers/receiveWebhook");
+const { Booking, Pay } = require("../db");
+require("dotenv").config();
+const {
+  updateBookingHandler,
+} = require("../handlers/bookings/updateBookingHandler");
 
 const { CLIENT_URL } = process.env;
 
 const router = Router();
 
-router.get('/createorder', createOrder);
+router.get("/createorder", createOrder);
 // si el pago se aprueba deberia enviarlo de vuelta a la pagina RodarRent
-router.get('/success', async (req, res, next) => {
+router.get("/success", async (req, res, next) => {
   const { query } = req;
   const idMP = parseInt(query.payment_id, 10);
 
@@ -25,23 +28,28 @@ router.get('/success', async (req, res, next) => {
     ],
   });
 
+  console.log(pay.Booking.dataValues.id);
   if (pay && pay.Booking) {
+    await updateBookingHandler(
+      { stateBooking: "confirmed" },
+      pay.Booking.dataValues.id
+    );
     res.redirect(`${CLIENT_URL}/customer/${pay.Booking.dataValues.CustomerId}`);
   } else if (pay) {
     next(
       new Error(
-        'Se encontró un registro Pay, pero no tiene una reserva asociada',
-      ),
+        "Se encontró un registro Pay, pero no tiene una reserva asociada"
+      )
     );
   } else {
-    next(new Error('No se encontró un registro con ese idMP'));
+    next(new Error("No se encontró un registro con ese idMP"));
   }
 });
 
-router.get('/failure', (req, res) => res.send('Failure'));
+router.get("/failure", (req, res) => res.send("Failure"));
 
-router.get('/pending', (req, res) => res.send('Pending'));
+router.get("/pending", (req, res) => res.send("Pending"));
 
-router.post('/webhook', receiveWebhook);
+router.post("/webhook", receiveWebhook);
 
 module.exports = router;

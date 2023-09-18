@@ -5,8 +5,8 @@ async function getPaymentByIdHandler(id) {
   const payment = await Pay.findOne({
     where: {
       id,
-      status: {
-        [Op.ne]: 'deleted',
+      isActive: {
+        [Op.ne]: 'false',
       },
     },
   });

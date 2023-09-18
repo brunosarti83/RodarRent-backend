@@ -9,7 +9,9 @@ const getAvailableVehiclesHandler = async (query) => {
             limit, 
             offset, 
             startDate, 
-            finishDate, 
+            finishDate,
+            pickUpLocationId,
+            returnLocationId, 
             orderBy, 
             direction, 
             brand,
@@ -101,18 +103,48 @@ const getAvailableVehiclesHandler = async (query) => {
         // setup order for database query ////
         const order = [[(orderBy) ? orderBy : 'pricePerDay', (direction) ? direction : 'DESC']]
         ////////////////////
-
+        
+        // setup include to match pickUpLocationId ////
+        const include = pickUpLocationId ? {
+            model: Booking,
+            attributes: ['id', 'startDate', 'finishDate', 'pickUpLocationId', 'returnLocationId', 'stateBooking'],
+            where: {
+                stateBooking: {
+                    [Op.ne]: 'canceled'
+                },
+                finishDate: { 
+                    [Op.lte]: new Date(startDate) 
+                }, 
+            },
+            order: [
+                ['finishDate', 'DESC']
+            ],
+            limit: 1,
+            separate: true, // this makes separate querys for vehicle, slower but allows for order Bookings properly   
+        } : undefined
+        //////////////////////
+        
         // make query for Vehicles that match filter criteria and are not in busyCars array
         const availableVehicles = await Vehicle.findAll({
+            include, // NEW
             where,
             order,
-            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image']
+            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'LocationId']
         })
         ///////////////////
-        
+
+        //filter results so that vehicles have no prior reservations and where loaded on pickUpLocationId or where last returnLocationId matches pickUpLocationId
+        const availableVehiclesOnLocation = pickUpLocationId ? availableVehicles.filter(veh => {
+            if (!veh.Bookings.length) {
+                return veh.LocationId === pickUpLocationId
+            } else {
+                return veh.Bookings[0].returnLocationId === pickUpLocationId
+            }
+        }) : availableVehicles
+
         // filter results so that's there is only one Vehicle of each (model => transmission => fuel => price) combination ////
         const oneOfEachType = []
-        availableVehicles.forEach(availableCar => {
+        availableVehiclesOnLocation.forEach(availableCar => {
             const { brand, model, type, passengers, transmission, fuel, pricePerDay, image } = availableCar
             const alreadyIn = oneOfEachType.filter(car => { 
                 return (car.brand === brand && car.model === model && car.transmission === transmission && car.fuel === fuel && car.pricePerDay === pricePerDay)

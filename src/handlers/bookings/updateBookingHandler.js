@@ -3,6 +3,19 @@ const CustomError = require("../../utils/customError");
 
 const updateBookingHandler = async (data, id) => {
   try {
+    const existingBooking = await Booking.findOne({ where: { id } });
+    if (!existingBooking) {
+      throw new CustomError(`Booking with id ${id} not found`, 404);
+    }
+    if (
+      existingBooking.stateBooking === "completed" ||
+      existingBooking.status === "canceled"
+    ) {
+      throw new CustomError(
+        `Cannot update booking with id ${id} because its status is completed o canceled`,
+        400
+      );
+    }
     const updatedBooking = await Booking.update(data, {
       where: { id },
       return: true,

@@ -66,7 +66,7 @@ const getVehiclesHandler = async (query) => {
         const results = await Vehicle.findAll({
             where,
             order,
-            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'isActive']
+            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'LocationId', 'isActive']
         })
         ///////////////////
 
