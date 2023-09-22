@@ -66,6 +66,7 @@ Vehicle.hasMany(Booking);
 Customer.hasMany(Review);
 Review.belongsTo(Customer);
 
+
 Booking.belongsTo(Location, {
   as: 'pickUpLocation',
   foreignKey: 'pickUpLocationId',
