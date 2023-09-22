@@ -1,4 +1,6 @@
-const { Customer } = require('../../db');
+const { Customer} = require('../../db');
+const Sequelize = require('sequelize');
+const {Op} = Sequelize
 const CustomError = require('../../utils/customError');
 const { hashPassword } = require('../../utils/passwordHasher');
 
@@ -16,38 +18,37 @@ const createCustomerHandler = async (data) => {
     email,
     password,
   } = data;
-    try {
-      const hashedPassword = await hashPassword(password)
-      const [customer, created] = await Customer.findOrCreate({
-        where: { personalId },
-        defaults: {
-          name,
-          lastName,
-          birthDate,
-          address,
-          city,
-          country,
-          zipCode,
-          phoneNumber,
-          email,
-          password: hashedPassword,
-        },
-        // include: [
-        //   {
-        //     model: Genre,
-        //     where: { id: genreIds },
-        //   },
-        // ],
-      });
-      // await videogame.addGenre(genreIds);
-      if (!created) {
-        throw new CustomError('Customer already registered',400);
+
+  try {
+    const hashedPassword = await hashPassword(password);
+    const foundCustomer = await Customer.findOne({
+      where: {
+        [Op.or]: [{ personalId }, { email }],
+      },
+    });
+    data = { ...data, password: hashedPassword, isActive: true };
+    if (foundCustomer) {
+      if (!foundCustomer.isActive) {
+        const updated = await Customer.update(data, {
+          where: { email: foundCustomer.email },
+          return: true,
+          raw: true,
+        });
+        return updated;
       } else {
-        return customer;
+        throw new CustomError('Customer already registered with that email', 409);
       }
-    } catch (error) {
-      throw new CustomError(error.message,500);
+    } else {
+      const created = await Customer.create(data);
+      return created;
     }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode)
+    } else {
+      throw new CustomError(error.message, 500);
+    }
+  }
 };
 
 module.exports = createCustomerHandler;

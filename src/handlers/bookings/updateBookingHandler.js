@@ -4,6 +4,10 @@ const CustomError = require("../../utils/customError");
 const updateBookingHandler = async (data, id) => {
   try {
     const existingBooking = await Booking.findOne({ where: { id } });
+    const oldStartDate = existingBooking.startDate;
+    const oldFinishDate = existingBooking.finishDate;
+    const oldAmount = existingBooking.amount;
+
     if (!existingBooking) {
       throw new CustomError(`Booking with id ${id} not found`, 404);
     }
@@ -16,11 +20,13 @@ const updateBookingHandler = async (data, id) => {
         400
       );
     }
+
     const updatedBooking = await Booking.update(data, {
       where: { id },
       return: true,
       raw: true,
     });
+
     if (updatedBooking[0] === 0) {
       throw new CustomError(`Can't update booking with id ${id}`, 400);
     } else {

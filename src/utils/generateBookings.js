@@ -2,9 +2,7 @@ const axios = require('axios');
 
 const generateBookings = async (number) => {
     let i = 0
-    // get all vehicles
-    const vehiclesResponse = await axios.get('http://localhost:3001/vehicles')
-    const vehicles = vehiclesResponse.data.results
+
     // get all locations
     const allLocations = await axios.get(`http://localhost:3001/locations`)
     const locationIds = allLocations.data.map(loc => loc.id)
@@ -30,13 +28,24 @@ const generateBookings = async (number) => {
         const CustomerId = customerIds[Math.floor(Math.random()*customerIds.length)]
         const pickUpLocationId = locationIds[Math.floor(Math.random()*locationIds.length)]
         const returnLocationId = locationIds[Math.floor(Math.random()*locationIds.length)]
-        // choose a vehicle 'on' that pickUpLocation
-        const vehiclesAtLocation = vehicles.filter(veh => veh.LocationId === pickUpLocationId)
-        const vehicle = vehiclesAtLocation[Math.floor(Math.random()*vehiclesAtLocation.length)]
-        // check for that vehicle availability on dates
-        const confirmationResponse = await axios(`http://localhost:3001/available/${vehicle.id}/${startDate}/${finishDate}`)
-        const confirmation = confirmationResponse.data
-    
+        
+        // search for Vehicles available on locations and dates
+        const searchResponse = await axios(`http://localhost:3001/available/?startDate=${startDate}&finishDate=${finishDate}&pickUpLocationId=${pickUpLocationId}&returnLocationId=${returnLocationId}`)
+        const searchResults = searchResponse.data.results
+        const vehicle = searchResults[Math.floor(Math.random()*searchResults.length)]
+        
+        const booking = {
+            VehicleId: vehicle.id,
+            CustomerId,
+            startDate,
+            finishDate,
+            pricePerDay: vehicle.pricePerDay,
+            pickUpLocationId,
+            returnLocationId,
+        }
+        const bookingResponse = await axios.post(`http://localhost:3001/bookings`, booking) 
+        const bookingData = bookingResponse.data
+
         let possibleStates
         if (new Date(finishDate) < Date.now()) { 
             possibleStates = ['completed', 'canceled']
@@ -45,22 +54,9 @@ const generateBookings = async (number) => {
         } else {
             possibleStates = ['canceled', 'pending', 'confirmed']
         }
-        if (confirmation.state === 'Available') {
-            const booking = {
-                VehicleId: vehicle.id,
-                CustomerId,
-                startDate,
-                finishDate,
-                pricePerDay: vehicle.pricePerDay,
-                pickUpLocationId,
-                returnLocationId,
-                stateBooking: possibleStates[Math.floor(Math.random()*possibleStates.length)]
-            }
-            const bookingResponse = await axios.post(`http://localhost:3001/bookings`, booking)
-            //console.log(bookingResponse.data)
-        } //else {
-            //console.log(confirmation.state)
-        //}
+        bookingData.stateBooking = possibleStates[Math.floor(Math.random()*possibleStates.length)]
+        const changeBookingState = await axios.put(`http://localhost:3001/bookings/${bookingData.id}`, bookingData)
+      
         i++
     }
     console.log('done')

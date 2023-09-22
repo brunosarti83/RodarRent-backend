@@ -218,25 +218,19 @@ const years = [2021, 2022, 2023]
 const transmissions = ['manual', 'automatic']
 const fuels = ['gas', 'diesel']
 
-let locations
-axios.get('http://localhost:3001/locations')
-.then(({ data }) => {
-    locations = data
-})
-.catch((error) => {
-    console.log(error)
-})
-
-const locationIds = locations.map(loc => loc.id)
 
 const loadCars = async (nCars) => {
+
+    const response = await axios.get('http://localhost:3001/locations')
+    const locationIds = response.data.map(loc => loc.id)
+
     const load = []
     while (load.length < nCars) {
         const carTypeIndex = Math.floor(Math.random()*carTypes.length)
         const newCar = { ...carTypes[carTypeIndex] }
         newCar.domain = faker.vehicle.vrm()
         newCar.year = years[Math.floor(Math.random()*years.length)]
-        newCar.LocationId = locationsIds[Math.floor(Math.random()*locationsIds.length)]
+        newCar.LocationId = locationIds[Math.floor(Math.random()*locationIds.length)]
         //newCar.transmission = transmissions[Math.floor(Math.random()*transmissions.length)]
         // if (newCar.brand === 'Tesla') {
         //     newCar.fuel = 'electric'
@@ -254,7 +248,7 @@ const loadCars = async (nCars) => {
     }
 }
 // execution of load(nCars)
-loadCars(150)
+loadCars(80)
 ////////////
 
 //module.exports = loadCars;

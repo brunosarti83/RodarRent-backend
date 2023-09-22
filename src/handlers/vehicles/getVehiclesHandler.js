@@ -4,7 +4,8 @@ const CustomError = require('../../utils/customError');
 const getVehiclesHandler = async (query) => {
     try {
         let {
-            id, 
+            id,
+            domain, 
             limit, 
             offset,  
             orderBy, 
@@ -21,8 +22,9 @@ const getVehiclesHandler = async (query) => {
         } = query 
 
         // setup where for database query ////////
-        const where = {}
+        const where = { isActive: true }
         if (id) { where.id = id }
+        if (domain) { where.domain = domain }
         if (type) { where.type = type }
         if (transmission) { where.transmission = transmission }
         if (brand) { where.brand = brand }

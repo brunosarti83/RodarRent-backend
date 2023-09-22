@@ -9,8 +9,8 @@ const deleteVehicleByIdHandler = async (id) => {
       return: true, 
       raw:true,
     });
-    if(!deletedVehicle) throw new CustomError(`There's no customer matching id ${id}`,404)
-    return deletedCustomer
+    if(!deletedVehicle) throw new CustomError(`There's no vehicle matching id ${id}`,404)
+    return deletedVehicle
   } catch (error) {
     throw new CustomError(error.message,500);
   }

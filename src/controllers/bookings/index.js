@@ -4,6 +4,7 @@ const getBookingById = require("./getBookingById");
 const updateBooking = require("./updateBooking");
 const deleteBooking = require("./deleteBooking");
 const getFilteredBookings = require("./getFilteredBookings");
+const cancelBooking = require("./cancelBooking");
 
 module.exports = {
   createBooking,
@@ -12,4 +13,5 @@ module.exports = {
   updateBooking,
   deleteBooking,
   getFilteredBookings,
+  cancelBooking,
 };
