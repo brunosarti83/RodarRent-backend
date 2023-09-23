@@ -93,8 +93,8 @@ const getVehiclesHandler = async (query) => {
         let nextString = '/vehicles?'
         let prevString = '/vehicles?'
         for (let prop in query) {
-            if (nextString.at(-1) !== '?') { nextString += '&' }
-            if (prevString.at(-1) !== '?') { prevString += '&' }
+            if (nextString[nextString.length -1] !== '?') { nextString += '&' }
+            if (prevString[prevString.length -1] !== '?') { prevString += '&' }
             if (prop === 'offset') {
                 nextString += `offset=${showTo}`
                 prevString += `offset=${showFrom-limit}`
