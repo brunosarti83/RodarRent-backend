@@ -2,6 +2,10 @@ const passport = require('passport'); //tutorial: https://www.youtube.com/watch?
 const { Customer } = require('./src/db');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const axios = require('axios')
+const { newPassword } = require('./src/utils/newPassword');
+const { hashPassword } = require('./src/utils/passwordHasher');
+
+
 
 passport.use(
   new GoogleStrategy(
@@ -27,20 +31,22 @@ passport.use(
             });
           }
         }
-        
+        const newPass = newPassword()
+        const hashedPassword = await hashPassword(newPass);
         const [user, created] = await Customer.findOrCreate({
           where: { email: profile.email },
           defaults: {
             name: profile.given_name,
             lastName: profile.family_name,
             personalId: profile.id,
-            birthDate: 'n/a',
+            birthDate: '2000-04-10',
             address: 'n/a',
             city: 'n/a',
             country: 'n/a',
             zipCode: 'n/a',
             phoneNumber: 'n/a',
-            password: 'google-auth',
+            password: hashedPassword,
+            UserId: 2
           },
         });
         

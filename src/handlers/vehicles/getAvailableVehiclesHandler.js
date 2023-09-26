@@ -227,6 +227,7 @@ const getAvailableVehiclesHandler = async (query) => {
         // available option filters
         const brands = Array.from(new Set(results.map(car => car.brand)));
         const models = Array.from(new Set(results.map(car => car.model)));
+        const types = Array.from(new Set(results.map(car => car.type)));
         const transmissions = Array.from(new Set(results.map(car => car.transmission)));
         const fuelTypes = Array.from(new Set(results.map(car => car.fuel)));
         const passengersCapacities = Array.from(new Set(results.map(car => car.passengers))).sort();

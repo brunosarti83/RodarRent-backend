@@ -24,7 +24,8 @@ for (let i = 0; i < 40; i++) {
     zipCode: faker.address.zipCode(),
     phoneNumber: faker.phone.number(),
     email: faker.internet.email(name),
-    password: faker.internet.password()
+    password: faker.internet.password(),
+    UserId: 2
   };
   customers.push(customer);
 }

@@ -6,12 +6,14 @@ const { render } = require('@react-email/render');
 const { Normal } = require('./emailTemplates/normal');
 const { ResetPassword } = require('./emailTemplates/resetPassword');
 const { Register } = require('./emailTemplates/register');
+const { Review } = require('./emailTemplates/review');
+const { BookingConfirmation } = require('./emailTemplates/bookingConfirmation');
 
 dotenv.config();
 
 const sendEmailHandler = async (data) => {
-  const { userName, toEmailAddress, subject, text, template, replyToEmailAddress } = data;
-  console.log('1');
+  const { toEmailAddress, subject, template, replyToEmailAddress } = data;
+  
   const transporter = nodemailer.createTransport({
     host: 'smtp-mail.outlook.com',
     port: 587,
@@ -24,17 +26,25 @@ const sendEmailHandler = async (data) => {
   let emailhtml;
   switch (template) {
     case 'normal':
-      emailHtml = render(Normal({ text, subject, userName }));
+      emailHtml = render(Normal(data));
       break;
     case 'resetPassword':
-      emailHtml = render(ResetPassword({ text, subject, userName }));
+      emailHtml = render(ResetPassword(data));
       break;
     case 'register':
-      console.log('2');
-      emailHtml = render(Register({ userName }));
+      emailHtml = render(Register(data));
+      break;
+    case 'review':
+      emailHtml = render(Review(data));
+      break;
+    case 'bookingConfirmation':
+      emailHtml = render(BookingConfirmation(data));
+      break;
+    case 'bookingCancelation':
+      emailHtml = render(BookingCancelation(data));
       break;
     default:
-      emailHtml = render(Normal({ text, subject }));
+      emailHtml = render(Normal(data));
       break;
   }
 

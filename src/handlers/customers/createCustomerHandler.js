@@ -26,7 +26,7 @@ const createCustomerHandler = async (data) => {
         [Op.or]: [{ personalId }, { email }],
       },
     });
-    data = { ...data, password: hashedPassword, isActive: true };
+    data = { ...data, password: hashedPassword, isActive: true, UserId: 2};
     if (foundCustomer) {
       if (!foundCustomer.isActive) {
         const updated = await Customer.update(data, {

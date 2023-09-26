@@ -1,13 +1,14 @@
 const { Router } = require("express");
 const createOrder = require("../controllers/mercadoPago");
 const receiveWebhook = require("../controllers/receiveWebhook");
-const { Booking, Pay } = require("../db");
+const { Booking, Pay, Customer, Vehicle, Location } = require("../db");
 require("dotenv").config();
 const {
   updateBookingHandler,
 } = require("../handlers/bookings/updateBookingHandler");
+const axios = require("axios");
 
-const { CLIENT_URL } = process.env;
+const { CLIENT_URL, BACKEND_URL } = process.env;
 
 const router = Router();
 
@@ -24,16 +25,56 @@ router.get("/success", async (req, res, next) => {
     include: [
       {
         model: Booking,
+        include: [
+          {
+            model: Customer,
+          },
+        ],
       },
     ],
   });
 
-  console.log(pay.Booking.dataValues.id);
+  //console.log(pay.Booking.dataValues.id);
   if (pay && pay.Booking) {
     await updateBookingHandler(
       { stateBooking: "confirmed" },
       pay.Booking.dataValues.id
     );
+    //console.log(pay.Booking.dataValues);
+    const vehicle = await Vehicle.findOne({
+      where: {
+        id: pay.Booking.dataValues.VehicleId,
+      },
+    });
+    //console.log(vehicle);
+    const pickUpLocation = await Location.findOne({
+      where: {
+        id: pay.Booking.dataValues.pickUpLocationId,
+      },
+    });
+    //console.log(pickUpLocation.dataValues.alias);
+    const returnLocation = await Location.findOne({
+      where: {
+        id: pay.Booking.dataValues.returnLocationId,
+      },
+    });
+    console.log(returnLocation);
+    const data = {
+      toEmailAddress: pay.Booking.dataValues.Customer.email,
+      subject: "Reservation Confirmed",
+      template: "bookingConfirmation",
+      replyToEmailAddress: "rodarrent@outlook.com",
+      userName: pay.Booking.dataValues.Customer.name,
+      bookingId: pay.Booking.dataValues.id,
+      startDate: pay.Booking.dataValues.startDate,
+      finishDate: pay.Booking.dataValues.finishDate,
+      pickUpLocation: pickUpLocation,
+      returnLocation: returnLocation,
+      vehicle: vehicle,
+      customer: pay.Booking.dataValues.Customer,
+    };
+    //console.log(data);
+    await axios.post(`${BACKEND_URL}/sendemail`, data);
     res.redirect(`${CLIENT_URL}/customer/${pay.Booking.dataValues.CustomerId}`);
   } else if (pay) {
     next(

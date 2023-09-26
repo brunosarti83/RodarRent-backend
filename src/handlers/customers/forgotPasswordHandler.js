@@ -14,8 +14,8 @@ const forgotPasswordHandler = async (data) => {
     } else {
       const newRandomPassword = newPassword()
       const hashedPassword = await hashPassword(newRandomPassword);
-      await Customer.update({ password: hashedPassword },{where: { email },return: true,raw: true,}      );
-      return newRandomPassword;
+      await Customer.update({ password: hashedPassword },{where: { email },return: true,raw: true,});
+      return {id: customer.id,name:customer.name,password:newRandomPassword};
     }
   } catch (error) {
     throw new CustomError(error.message, 500);

@@ -17,7 +17,7 @@ const comparePassword = (enteredPassword, hashedPassword) => {
   return new Promise((resolve, reject) => {
     bcrypt.compare(enteredPassword, hashedPassword, (error, result) => {
       if (error) {
-        reject(err);
+        reject(error);
       } else {
         resolve(result);
       }

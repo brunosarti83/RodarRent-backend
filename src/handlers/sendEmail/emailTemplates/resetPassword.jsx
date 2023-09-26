@@ -8,11 +8,12 @@ const { Head } = require('@react-email/head');
 const { Section } = require('@react-email/section');
 const { Preview } = require('@react-email/preview');
 
-export function ResetPassword () {
+export function ResetPassword (props) {
+  const {userName, text} = props
   return (
     <Html>
       <Head />
-      <Preview>Preview Text</Preview>
+      <Preview>Password reset</Preview>
       <Tailwind>
         <Body className="bg-white my-auto mx-auto font-sans">
           <Container className="border border-solid border-gray-700 rounded my-[40px] mx-auto p-[20px] w-[800px]">
@@ -23,9 +24,10 @@ export function ResetPassword () {
               ></Img>
             </Section>
             <Section className="text-center">
-              <text className="text-lg font-medium">Hi, </text>
+              <text className="text-left text-lg font-medium">Hi, {userName}.</text>
+              <br></br>
               <text className="text-center text-md">
-                this is an auto generated email, this is your new password for
+                This is an auto generated email, this is your new password for
                 RodarRent,
               </text>
               <br></br>
@@ -35,7 +37,7 @@ export function ResetPassword () {
               </text>
               <br></br>
               <Container className="p-4 bg-gray-200 rounded-sm my-4 text-center">
-                UVXR 6674 5590 GGOJ HBS
+                {text}
               </Container>
               <Section className="text-center text-md mx-auto">
                 <text className="text-center text-md mx-auto">
