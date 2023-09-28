@@ -22,6 +22,9 @@ const BookingConfirmation = (props) => {
     vehicle,
     customer,
   } = props;
+  const formattedStartDate = new Date(startDate).toLocaleDateString();
+  const formattedFinishDate = new Date(finishDate).toLocaleDateString();
+  
   return (
     <Html>
       <Head></Head>
@@ -69,7 +72,7 @@ const BookingConfirmation = (props) => {
                 <Row className="mt-8 ml-6">
                   <Column className="w-[50%]">
                     <text className="font-bold">Pick Up: </text>
-                    <text className="ml-10">{startDate}</text>
+                    <text className="ml-10">{formattedStartDate}</text>
                     <br></br>
                     <text>{pickUpLocation.alias}</text>
                     <br></br>
@@ -79,7 +82,7 @@ const BookingConfirmation = (props) => {
                     <br></br>
                     <br></br>
                     <text className="font-bold">Return: </text>
-                    <text className="ml-10">{finishDate}</text>
+                    <text className="ml-10">{formattedFinishDate}</text>
                     <br></br>
                     <text>{returnLocation.alias}</text>
                     <br></br>

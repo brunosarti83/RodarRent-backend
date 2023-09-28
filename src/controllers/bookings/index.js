@@ -8,6 +8,7 @@ const cancelBooking = require("./cancelBooking");
 const getBookingsSummary = require("./getBookingsSummary");
 const getHistoryBookings = require("./getHistoryBookings");
 const getFutureBookings = require("./getFutureBookings");
+const getMostRequiredBrands = require("./getMostRequiredBrands");
 
 module.exports = {
   createBooking,
@@ -20,4 +21,5 @@ module.exports = {
   getBookingsSummary,
   getHistoryBookings,
   getFutureBookings,
+  getMostRequiredBrands,
 };

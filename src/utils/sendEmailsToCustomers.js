@@ -42,7 +42,7 @@ const sendEmailsToCustomers = async () => {
         toEmailAddress: Customer.dataValues.email,
         subject: 'Leave your review',
         template: 'review',
-        replyToEmailAddress: 'rodarrent@outlook.com',
+        replyToEmailAddress: 'rodarrentadm@outlook.com',
         userName: Customer.dataValues.name,
         linkToReview: `${CLIENT_URL}/review`,
       };

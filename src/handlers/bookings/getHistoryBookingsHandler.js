@@ -11,7 +11,7 @@ const getHistoryBookingsHandler = async (req, res) => {
           sequelize.fn("to_char", sequelize.col("startDate"), "YYYY-MM"),
           "month",
         ],
-        [sequelize.fn("SUM", sequelize.col("amount")), "profit"],
+        [sequelize.fn("COUNT", sequelize.col("id")), "count"],
       ],
       group: [sequelize.fn("to_char", sequelize.col("startDate"), "YYYY-MM")],
       order: [
@@ -21,7 +21,7 @@ const getHistoryBookingsHandler = async (req, res) => {
     return history;
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error retrieving profit history." });
+    res.status(500).json({ error: "Error retrieving count history." });
   }
 };
 

@@ -56,7 +56,7 @@ export function Register(props) {
                   need assistance, our customer support team is here to help at
                 </text>
                 <br></br>
-                <text className="font-bold">rodarrent@outlook.com </text>
+                <text className="font-bold">rodarrentadm@outlook.com </text>
                 <text> or </text>
                 <text className="font-bold"> +54 9 11 4357559</text>
                 <br></br>

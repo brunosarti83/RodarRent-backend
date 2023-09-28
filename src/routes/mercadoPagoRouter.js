@@ -58,12 +58,13 @@ router.get("/success", async (req, res, next) => {
         id: pay.Booking.dataValues.returnLocationId,
       },
     });
-    console.log(returnLocation);
+
+    //console.log(returnLocation);
     const data = {
       toEmailAddress: pay.Booking.dataValues.Customer.email,
       subject: "Reservation Confirmed",
       template: "bookingConfirmation",
-      replyToEmailAddress: "rodarrent@outlook.com",
+      replyToEmailAddress: "rodarrentadm@outlook.com",
       userName: pay.Booking.dataValues.Customer.name,
       bookingId: pay.Booking.dataValues.id,
       startDate: pay.Booking.dataValues.startDate,

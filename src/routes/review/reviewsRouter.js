@@ -1,10 +1,10 @@
 const { Router } = require('express');
-const { Review } = require('../../db');
 
 const {
   createReview,
   getAllReviews,
   getReviewsByOrder,
+  deleteReview,
 } = require('../../controllers/review');
 const { postReviewValidate } = require('../../middlewares/review/index');
 
@@ -17,5 +17,6 @@ router.get('/hc', (req, res) => {
 router.post('/reviews', postReviewValidate, createReview);
 router.get('/reviews', getAllReviews);
 router.get('/review', getReviewsByOrder);
+router.delete('/reviews/:id', deleteReview);
 
 module.exports = router;

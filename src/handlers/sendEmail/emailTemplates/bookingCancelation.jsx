@@ -21,6 +21,8 @@ const BookingCancelation = (props) => {
     returnLocation,
     customer,
   } = props;
+  const formattedStartDate = new Date(startDate).toLocaleDateString();
+  const formattedFinishDate = new Date(finishDate).toLocaleDateString();
   return (
     <Html>
       <Head></Head>
@@ -53,8 +55,8 @@ const BookingCancelation = (props) => {
                 </Row>
                 <Row className="mt-8 ml-6">
                   <Column className="w-[50%]">
-                    <text className="font-bold">Pick Up:</text>
-                    <text className="ml-10">{startDate}</text>
+                    <text className="font-bold">Pick Up :</text>
+                    <text className="ml-10">{formattedStartDate}</text>
                     <br></br>
                     <text>{pickUpLocation.alias}</text>
                     <br></br>
@@ -63,8 +65,8 @@ const BookingCancelation = (props) => {
                     <text>City: {pickUpLocation.city}</text>
                     <br></br>
                     <br></br>
-                    <text className="font-bold">Return:</text>
-                    <text className="ml-10">{finishDate}</text>
+                    <text className="font-bold">Return :</text>
+                    <text className="ml-10">{formattedFinishDate}</text>
                     <br></br>
                     <text>{returnLocation.alias}</text>
                     <br></br>
@@ -74,11 +76,11 @@ const BookingCancelation = (props) => {
                     <br></br>
                   </Column>
                   <Column className="w-[50%]">
-                    <text>First Name: {customer.firstName}</text>
+                    <text>First Name: {customer.name}</text>
                     <br></br>
                     <text>Last Name: {customer.lastName}</text>
                     <br></br>
-                    <text>ID: {customer.id}</text>
+                    <text>ID:{customer.personalId}</text>
                     <br></br>
                     <text>Email: {customer.email}</text>
                     <br></br>
@@ -88,7 +90,7 @@ const BookingCancelation = (props) => {
                     </text>
                     <br></br>
                     <Container className="text-md font-semibold font-sans text-slate-500">
-                      <text>rodarrent@outlook.com</text>
+                      <text>rodarrentadm@outlook.com</text>
                       <br></br>
                       <text>+54 9 11 4357559</text>
                     </Container>

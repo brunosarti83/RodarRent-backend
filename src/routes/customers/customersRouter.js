@@ -11,6 +11,7 @@ const {
   updatePassword,
   getCustomerById,
   deleteCustomerById,
+  deleteCompletelyCustomerById
 } = require('../../controllers/customers');
 
 const {
@@ -36,6 +37,7 @@ router.post("/customers/forgotpassword",forgotPasswordValidation, forgotPassword
 router.put("/customers", createCustomerValidation, updateCustomer);
 router.put("/customers/updatePassword", updatePasswordValidation, updatePassword);
 router.delete("/customers/:id",deleteCustomerByIdValidation,deleteCustomerById);
+router.delete("/customers/delete/:id",deleteCustomerByIdValidation,deleteCompletelyCustomerById);
 
 //para google oauth20:
 

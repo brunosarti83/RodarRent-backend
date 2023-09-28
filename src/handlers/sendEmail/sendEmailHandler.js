@@ -1,21 +1,22 @@
-require('@babel/register');
-const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
-const CustomError = require('../../utils/customError');
-const { render } = require('@react-email/render');
-const { Normal } = require('./emailTemplates/normal');
-const { ResetPassword } = require('./emailTemplates/resetPassword');
-const { Register } = require('./emailTemplates/register');
-const { Review } = require('./emailTemplates/review');
-const { BookingConfirmation } = require('./emailTemplates/bookingConfirmation');
+require("@babel/register");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+const CustomError = require("../../utils/customError");
+const { render } = require("@react-email/render");
+const { Normal } = require("./emailTemplates/normal");
+const { ResetPassword } = require("./emailTemplates/resetPassword");
+const { Register } = require("./emailTemplates/register");
+const { Review } = require("./emailTemplates/review");
+const { BookingConfirmation } = require("./emailTemplates/bookingConfirmation");
+const { BookingCancelation } = require("./emailTemplates/bookingCancelation");
 
 dotenv.config();
 
 const sendEmailHandler = async (data) => {
   const { toEmailAddress, subject, template, replyToEmailAddress } = data;
-  
+
   const transporter = nodemailer.createTransport({
-    host: 'smtp-mail.outlook.com',
+    host: "smtp-mail.outlook.com",
     port: 587,
     secure: false,
     auth: {
@@ -25,22 +26,22 @@ const sendEmailHandler = async (data) => {
   });
   let emailhtml;
   switch (template) {
-    case 'normal':
+    case "normal":
       emailHtml = render(Normal(data));
       break;
-    case 'resetPassword':
+    case "resetPassword":
       emailHtml = render(ResetPassword(data));
       break;
-    case 'register':
+    case "register":
       emailHtml = render(Register(data));
       break;
-    case 'review':
+    case "review":
       emailHtml = render(Review(data));
       break;
-    case 'bookingConfirmation':
+    case "bookingConfirmation":
       emailHtml = render(BookingConfirmation(data));
       break;
-    case 'bookingCancelation':
+    case "bookingCancelation":
       emailHtml = render(BookingCancelation(data));
       break;
     default:
@@ -60,7 +61,7 @@ const sendEmailHandler = async (data) => {
   } catch (error) {
     throw new CustomError(error.message, 500);
   }
-  return 'Email successfully sent';
+  return "Email successfully sent";
 };
 
 module.exports = sendEmailHandler;

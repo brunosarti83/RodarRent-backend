@@ -54,7 +54,7 @@ passport.use(
           const body = {
             userName: profile.given_name, 
             toEmailAddress: profile.email, 
-            replyToEmailAddress: 'rodarrent@outlook.com',
+            replyToEmailAddress: 'rodarrentadm@outlook.com',
             subject: `Welcome ${profile.given_name}`, 
             template: 'register',
           };

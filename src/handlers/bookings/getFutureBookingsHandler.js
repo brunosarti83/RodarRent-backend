@@ -8,6 +8,10 @@ const getFutureBookingsHandler = async (req, res) => {
     const currentDate = new Date();
     const currentYear = currentDate.getUTCFullYear();
     const currentMonth = currentDate.getUTCMonth() + 1;
+
+    const nextMonthYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+
     const futureBookings = await Booking.findAll({
       attributes: [
         [
@@ -18,7 +22,7 @@ const getFutureBookingsHandler = async (req, res) => {
       ],
       where: {
         startDate: {
-          [Op.gte]: `${currentYear}-${currentMonth
+          [Op.gte]: `${nextMonthYear}-${nextMonth
             .toString()
             .padStart(2, "0")}-01T00:00:00.000Z`,
         },

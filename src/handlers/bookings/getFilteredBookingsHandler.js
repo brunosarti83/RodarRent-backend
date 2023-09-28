@@ -55,7 +55,7 @@ const getFilteredBookingsHandler = async (data, res) => {
     });
 
     if (filteredBookings.length === 0) {
-      throw new CustomError("No bookings found matching the criteria", 404);
+      return [];
     }
 
     return filteredBookings;

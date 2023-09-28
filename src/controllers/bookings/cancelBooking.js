@@ -9,7 +9,8 @@ const cancelBooking = async (req, res) => {
     const booking = await cancelBookingHandler(data, id);
     res.status(200).json(booking);
   } catch (error) {
-    res.status(error.statusCode).json({ error: error.message });
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ error: error.message });
   }
 };
 
