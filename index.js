@@ -10,10 +10,10 @@ conn.sync({ force: false, alter: false }).then(async () => {
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
     performHealthCheck();
-    sendEmailsToCustomers();
+    //sendEmailsToCustomers();
     updateBookingStatus();
     setInterval(performHealthCheck, 60000);
-    setInterval(sendEmailsToCustomers, 24 * 60 * 60 * 1000);
+    //setInterval(sendEmailsToCustomers, 24 * 60 * 60 * 1000);
     setInterval(updateBookingStatus, 24 * 60 * 60 * 1000);
   });
 });
