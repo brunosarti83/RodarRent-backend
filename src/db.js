@@ -10,7 +10,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const { DB_URL, DB_SSL_ENABLED, DB_SSL_REJECT_UNAUTHORIZED } = process.env;
 
@@ -52,7 +52,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Para relacionarlos hacemos un destructuring
 
 // ACÁ ABAJO IMPORTAR LOS MODELS
-const { Customer, Booking, Location, Pay, Vehicle } = sequelize.models;
+const { Customer, Booking, Location, Pay, Vehicle, Review, User } =
+  sequelize.models;
 
 // Aca vendrian las relaciones
 Pay.hasOne(Booking);
@@ -63,6 +64,8 @@ Vehicle.hasOne(Location);
 Location.hasMany(Vehicle);
 Booking.belongsTo(Vehicle);
 Vehicle.hasMany(Booking);
+Customer.hasMany(Review);
+Review.belongsTo(Customer);
 
 
 Booking.belongsTo(Location, {
@@ -75,11 +78,15 @@ Booking.belongsTo(Location, {
 });
 Location.hasMany(Booking, { foreignKey: "pickUpLocationId" });
 Location.hasMany(Booking, { foreignKey: "returnLocationId" });
+Customer.belongsTo(User, {
+  foreignKey: "UserId",
+  onUpdate: "CASCADE",
+});
 
 //defino método para hashear password de Customer
 Customer.prototype.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
-}
+};
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

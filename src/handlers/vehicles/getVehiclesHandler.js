@@ -1,10 +1,12 @@
 const { Vehicle } = require('../../db');
 const CustomError = require('../../utils/customError');
+const Sequelize = require('sequelize');
 
 const getVehiclesHandler = async (query) => {
     try {
         let {
-            id, 
+            id,
+            domain, 
             limit, 
             offset,  
             orderBy, 
@@ -21,8 +23,9 @@ const getVehiclesHandler = async (query) => {
         } = query 
 
         // setup where for database query ////////
-        const where = {}
+        const where = { isActive: true }
         if (id) { where.id = id }
+        if (domain) { where.domain = domain }
         if (type) { where.type = type }
         if (transmission) { where.transmission = transmission }
         if (brand) { where.brand = brand }
@@ -66,7 +69,7 @@ const getVehiclesHandler = async (query) => {
         const results = await Vehicle.findAll({
             where,
             order,
-            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'isActive']
+            attributes: ['id', 'domain', 'brand', 'model', 'type', 'passengers', 'transmission', 'fuel', 'pricePerDay', 'image', 'LocationId', 'isActive']
         })
         ///////////////////
 
@@ -91,8 +94,8 @@ const getVehiclesHandler = async (query) => {
         let nextString = '/vehicles?'
         let prevString = '/vehicles?'
         for (let prop in query) {
-            if (nextString.at(-1) !== '?') { nextString += '&' }
-            if (prevString.at(-1) !== '?') { prevString += '&' }
+            if (nextString[nextString.length -1] !== '?') { nextString += '&' }
+            if (prevString[prevString.length -1] !== '?') { prevString += '&' }
             if (prop === 'offset') {
                 nextString += `offset=${showTo}`
                 prevString += `offset=${showFrom-limit}`
@@ -109,10 +112,16 @@ const getVehiclesHandler = async (query) => {
         // available option filters
         const brands = Array.from(new Set(results.map(car => car.brand)));
         const models = Array.from(new Set(results.map(car => car.model)));
+        const types = Array.from(new Set(results.map(car => car.type))); 
         const transmissions = Array.from(new Set(results.map(car => car.transmission)));
         const fuelTypes = Array.from(new Set(results.map(car => car.fuel)));
         const passengers = Array.from(new Set(results.map(car => car.passengers))).sort();
         /////////////////////////
+        // images for each Model
+        const images = results.reduce((accum, current) => {
+            accum[current.model] = accum[current.model] ? Array.from(new Set([...accum[current.model], current.image])) : [current.image]
+            return accum;
+        }, {})
 
         // configure response /////////
         const response = {
@@ -122,7 +131,8 @@ const getVehiclesHandler = async (query) => {
             prev,
             resultsCount: results.length,
             results: results.slice(showFrom, showTo),
-            availableFilterOptions: { brands, models, transmissions, fuelTypes, passengers }
+            availableFilterOptions: { brands, models, types, transmissions, fuelTypes, passengers },
+            images
         }
 
         return response

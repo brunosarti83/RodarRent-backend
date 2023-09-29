@@ -14,7 +14,7 @@ const getFilteredBookingsHandler = async (data, res) => {
       bookingId,
       orderVar,
       orderMode,
-      limit,
+      //limit,
     } = data;
     //deberiamos agregar desde algun lado el id del usuario para poder agregarlo a filter Conditions
     const filterConditions = [];
@@ -51,11 +51,11 @@ const getFilteredBookingsHandler = async (data, res) => {
         [Op.and]: filterConditions,
       },
       order: orderOptions,
-      limit: parseInt(limit) || 10,
+      //limit: parseInt(limit) || 1000,
     });
 
     if (filteredBookings.length === 0) {
-      throw new CustomError("No bookings found matching the criteria", 404);
+      return [];
     }
 
     return filteredBookings;
