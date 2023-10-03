@@ -59,7 +59,7 @@ const getVehicleAvailabilityByIdHandler = async ({ id, startDate, finishDate }) 
         return {
             state: 'Not Available - Rented',
             matchingReservations: thisVehicleMatchingBookings,
-            suggestedReplacement: suggestedOption.results.length ? suggestedOption.results.at(0).id : 'No vehicles of the same brand/model available on required dates',
+            suggestedReplacement: suggestedOption.results.length ? suggestedOption.results[0].id : 'No vehicles of the same brand/model available on required dates',
         }
 
     } catch (error) {
