@@ -47,4 +47,8 @@ router.get("/google/callback",googleCallback)
 router.get("/auth/google",google)
 router.get("/logout",logout)
 
+router.get("/userstatus", (req, res) => {
+  res.sendStatus(200).send(req.user)
+})
+
 module.exports = router;

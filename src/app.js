@@ -21,7 +21,11 @@ const usersRouter = require("../src/routes/users/usersRouter");
 const server = express();
 server.name = "API";
 
-server.use(session({ secret: "dogs" }));
+server.use(session({ 
+  secret: "dogs",
+  saveUninitialized: false,
+  resave: false
+}));
 server.use(passport.initialize());
 server.use(passport.session());
 

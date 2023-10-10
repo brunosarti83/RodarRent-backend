@@ -16,7 +16,10 @@ passport.use(
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {
-      
+
+      console.log('...googleStrategyprofile...')
+      console.log(profile)
+
       try {
         const foundCustomer = await Customer.findOne({
           where: { email: profile.email },
@@ -60,6 +63,9 @@ passport.use(
           };
           await axios.post(`${process.env.BACKEND_URL}/sendemail`,body)
         }
+
+        console.log(user)
+
         return done(null, user);
       } catch (err) {
         return done(err, null);
@@ -70,9 +76,14 @@ passport.use(
 
 
 passport.serializeUser(function (user, done) {
+  console.log('...serializeuser...')
+  console.log(user)
+
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
+  console.log('...deserealizeuser...')
+  console.log(user)
   done(null, user);
 });
