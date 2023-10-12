@@ -21,7 +21,7 @@ const {
   updatePasswordValidation,
 } = require('../../middlewares/customers');
 
-const { isLoggedIn,loginSuccess, loginFailure, googleCallback, google, logout } = require('../../controllers/customers/googleOauth20');
+const { isLoggedIn, loginSuccess, loginFailure, googleCallback, google, logout } = require('../../controllers/customers/googleOauth20');
 const forgotPasswordValidation = require('../../middlewares/customers/forgotPasswordValidation');
 const forgotPassword = require('../../controllers/customers/forgotPassword');
 
@@ -41,10 +41,10 @@ router.delete("/customers/delete/:id",deleteCustomerByIdValidation,deleteComplet
 
 //para google oauth20:
 
-router.get("/auth/success",isLoggedIn, loginSuccess)
+//router.get("/auth/success",isLoggedIn, loginSuccess)
 router.get("/auth/failure", loginFailure)
-router.get("/google/callback",googleCallback)
-router.get("/auth/google",google)
-router.get("/logout",logout)
+router.get("/google/callback", googleCallback, loginSuccess)
+router.get("/auth/google", google)
+router.get("/logout", logout)
 
 module.exports = router;

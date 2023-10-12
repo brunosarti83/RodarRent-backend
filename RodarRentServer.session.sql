@@ -1,1 +1,2 @@
-DELETE FROM "Vehicles";
+DELETE FROM "Customers"
+WHERE id = "8ebea1a3-7946-4800-a631-5c2838c03b0c";

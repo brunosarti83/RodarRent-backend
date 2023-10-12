@@ -12,11 +12,11 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: process.env.BACKEND_URL + '/google/callback', //esta callback es la url a la que vas cuando el login es successful
+      callbackURL: process.env.BACKEND_URL + '/google/callback', //this route is visited after succesfull login on google site
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {
-      
+
       try {
         const foundCustomer = await Customer.findOne({
           where: { email: profile.email },
@@ -60,7 +60,9 @@ passport.use(
           };
           await axios.post(`${process.env.BACKEND_URL}/sendemail`,body)
         }
+
         return done(null, user);
+
       } catch (err) {
         return done(err, null);
       }
@@ -70,9 +72,11 @@ passport.use(
 
 
 passport.serializeUser(function (user, done) {
+  // could just save user.id inside done()
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
+  // could receive id and look for the user in db and return it in done() 
   done(null, user);
 });
