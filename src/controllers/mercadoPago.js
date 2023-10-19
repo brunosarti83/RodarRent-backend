@@ -1,14 +1,16 @@
 /* eslint-disable object-shorthand */
-const mercadopago = require('mercadopago');
+const mercadopago = require('mercadopago'); //library
 require('dotenv').config();
 const { Booking } = require('../db');
 
+// mercadopago controller
 const createOrder = async (req, res) => {
   const { ACCESS_TOKEN, MP_URL } = process.env;
-
+  // configures token
   mercadopago.configure({
     access_token: ACCESS_TOKEN,
   });
+  // extracts data from query received on POST and formats data to use
   const { query } = req;
   const product = {
     id: query.id,
@@ -18,6 +20,7 @@ const createOrder = async (req, res) => {
     unit_price: parseFloat(query.unit_price),
   };
 
+  // configure redirects MP_URL is backend_main currently would be better main/mp/success
   const backUrls = {
     success: `${MP_URL}/success`,
     failure: `${MP_URL}/failure`,
@@ -25,6 +28,7 @@ const createOrder = async (req, res) => {
   };
   const notificationUrl = `${MP_URL}/webhook`;
 
+  // configure options to pass on
   const preference = {
     items: [
       {
@@ -53,6 +57,7 @@ const createOrder = async (req, res) => {
     // console.log(response.body.items);
     const payLink = response.body.init_point;
     res.send(payLink);
+    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

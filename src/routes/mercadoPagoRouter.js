@@ -12,12 +12,18 @@ const { CLIENT_URL, BACKEND_URL } = process.env;
 
 const router = Router();
 
+// flow is > createOrder(receives req from Client, setsUp payLink) > 
+// webhooks(expects payment, when received creates pay on db) > 
+// success(receives pay updates booking) / failure
+
 router.get("/createorder", createOrder);
-// si el pago se aprueba deberia enviarlo de vuelta a la pagina RodarRent
+
+// from createorder if success : (this could be separate controller)
 router.get("/success", async (req, res, next) => {
+  // receives payment_id from query
   const { query } = req;
   const idMP = parseInt(query.payment_id, 10);
-
+  
   const pay = await Pay.findOne({
     where: {
       idMP,
@@ -75,7 +81,9 @@ router.get("/success", async (req, res, next) => {
       customer: pay.Booking.dataValues.Customer,
     };
     //console.log(data);
+    // sends confirmation email to user
     await axios.post(`${BACKEND_URL}/sendemail`, data);
+    // redirects user to frontend/customer/:customerId
     res.redirect(`${CLIENT_URL}/customer/${pay.Booking.dataValues.CustomerId}`);
   } else if (pay) {
     next(
