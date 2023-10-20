@@ -1,4 +1,4 @@
-const { Booking, Vehicle, Location, Customer } = require("../../db");
+const { Booking } = require("../../db");
 const { calculateAmount } = require("../../utils/calculateAmount");
 
 const createBookingHandler = async (data) => {
@@ -12,18 +12,10 @@ const createBookingHandler = async (data) => {
     returnLocationId,
   } = data;
   // calcular amount
-  const amount = calculateAmount(startDate, finishDate, pricePerDay);
+  data.amount = calculateAmount(startDate, finishDate, pricePerDay);
+  
   //creamos la reserva en la BDD
-  const booking = await Booking.create({
-    //cambiar estos nombres luego del arreglo(customer y domain)
-    CustomerId,
-    VehicleId,
-    amount,
-    startDate,
-    finishDate,
-    pickUpLocationId,
-    returnLocationId,
-  });
+  const booking = await Booking.create(data);
   return booking;
 };
 

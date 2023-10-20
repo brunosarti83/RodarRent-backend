@@ -27,6 +27,7 @@ const getVehicleAvailabilityByIdHandler = async ({ id, startDate, finishDate }) 
                 stateBooking: {
                     [Op.ne]: 'canceled'
                 },
+                isActive: true,
                 startDate: {
                     [Op.lte]: new Date(finishDate)
                 },

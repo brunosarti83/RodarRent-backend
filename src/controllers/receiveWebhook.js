@@ -11,7 +11,6 @@ const receiveWebhook = async (req, res) => {
     // gets topic or type via query
     const { query } = req;
     const topic = query.topic || query.type;
-    console.log(topic);
 
     switch (topic) {
       case 'payment':
@@ -21,7 +20,7 @@ const receiveWebhook = async (req, res) => {
         const payment = await mercadopago.payment.findById(paymentId);
         // with payment data format pay object to POST payment on to db
         const pay = {
-          id: payment.body.additional_info.items[0].id,
+          id: payment.body.additional_info.items[0].id, //bookings Id
           idMP: payment.body.id,
           amount: payment.body.transaction_amount,
           date: payment.body.date_approved,
@@ -32,7 +31,6 @@ const receiveWebhook = async (req, res) => {
         const crearPagoUrl = `${MP_URL}/payments`;
         // post pay object to log payment on db
         const response = await axios.post(crearPagoUrl, pay);
-        
         // look for utility of merchantO
         const merchantO = await mercadopago.merchant_orders.findById(
           payment.body.order.id,

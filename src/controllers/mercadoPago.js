@@ -20,7 +20,7 @@ const createOrder = async (req, res) => {
     unit_price: parseFloat(query.unit_price),
   };
 
-  // configure redirects MP_URL is backend_main currently would be better main/mp/success
+  // configure redirects MP_URL is currently backend_main would be better main/mp/success
   const backUrls = {
     success: `${MP_URL}/success`,
     failure: `${MP_URL}/failure`,
