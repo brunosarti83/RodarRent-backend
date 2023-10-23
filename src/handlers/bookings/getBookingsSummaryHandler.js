@@ -20,6 +20,9 @@ function getColorForState(state) {
 const getBookingsSummaryHandler = async (req, res) => {
   try {
     const bookingSummary = await Booking.findAll({
+      where : {
+        isActive: true
+      },
       attributes: [
         "stateBooking",
         [sequelize.fn("count", sequelize.col("stateBooking")), "count"],

@@ -6,6 +6,7 @@ const { Op } = require("sequelize");
 const getHistoryBookingsHandler = async (req, res) => {
   try {
     const history = await Booking.findAll({
+      isActive: true,
       attributes: [
         [
           sequelize.fn("to_char", sequelize.col("startDate"), "YYYY-MM"),
