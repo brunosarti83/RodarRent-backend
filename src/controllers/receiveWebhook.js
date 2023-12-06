@@ -8,42 +8,38 @@ require('dotenv').config();
 const receiveWebhook = async (req, res) => {
   const { MP_URL } = process.env;
   try {
-    // console.log('notification payment received:', req.query);
-    // console.log(req.query);
+    // gets topic or type via query
     const { query } = req;
     const topic = query.topic || query.type;
-    console.log(topic);
 
     switch (topic) {
       case 'payment':
+        // if payment look for payment id on query
         const paymentId = query['data.id'];
-        // console.log('getting', topic, paymentId);
+        // with query id ask mercadopago for payment data
         const payment = await mercadopago.payment.findById(paymentId);
-        // console.log(payment);
+        // with payment data format pay object to POST payment on to db
         const pay = {
-          id: payment.body.additional_info.items[0].id,
+          id: payment.body.additional_info.items[0].id, //bookings Id
           idMP: payment.body.id,
           amount: payment.body.transaction_amount,
           date: payment.body.date_approved,
           method: payment.body.payment_type_id,
           status: payment.body.status,
         };
-        // console.log(pay);
-
-        // Enviar el objeto JSON como parte del cuerpo de la solicitud POST
-        const crearPagoUrl = `${MP_URL}/payments`; // Reemplaza con la URL correcta
-
+        // url from our own payments routes
+        const crearPagoUrl = `${MP_URL}/payments`;
+        // post pay object to log payment on db
         const response = await axios.post(crearPagoUrl, pay);
-        // console.log('Respuesta de la creación de pago:', response.data);
-
+        // look for utility of merchantO
         const merchantO = await mercadopago.merchant_orders.findById(
           payment.body.order.id,
         );
         // console.log(merchantO);
         break;
+
       case 'merchant_order':
         const orderId = query.id;
-        // console.log('getting', topic, orderId);
         const merchantOrder = await mercadopago.merchant_orders.findById(
           orderId,
         );
@@ -51,6 +47,7 @@ const receiveWebhook = async (req, res) => {
         break;
     }
     res.sendStatus(200);
+
   } catch (error) {
     console.error('error notification payment:', error);
     res.status(500).json({ error: error.message });

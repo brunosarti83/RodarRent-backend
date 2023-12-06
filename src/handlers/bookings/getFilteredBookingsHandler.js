@@ -16,7 +16,7 @@ const getFilteredBookingsHandler = async (data, res) => {
       orderMode,
       //limit,
     } = data;
-    //deberiamos agregar desde algun lado el id del usuario para poder agregarlo a filter Conditions
+    
     const filterConditions = [];
 
     if (CustomerId) {
@@ -48,6 +48,7 @@ const getFilteredBookingsHandler = async (data, res) => {
 
     const filteredBookings = await Booking.findAll({
       where: {
+        isActive: true,
         [Op.and]: filterConditions,
       },
       order: orderOptions,

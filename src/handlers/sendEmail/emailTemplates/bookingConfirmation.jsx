@@ -22,8 +22,8 @@ const BookingConfirmation = (props) => {
     vehicle,
     customer,
   } = props;
-  const formattedStartDate = new Date(startDate).toLocaleDateString();
-  const formattedFinishDate = new Date(finishDate).toLocaleDateString();
+  const formattedStartDate = startDate.split('T')[0];
+  const formattedFinishDate = finishDate.split('T')[0];
   
   return (
     <Html>
@@ -49,7 +49,7 @@ const BookingConfirmation = (props) => {
                 <Row className="w-[600px] bg-white rounded-2xl shadow-lg mt-4 px-3 py-2">
                   <Column className="w-[50%]">
                     <Img
-                      src="https://res.cloudinary.com/daiztctac/image/upload/v1694023585/mjjohf5x89gjx1e5vedp.webp"
+                      src={`${vehicle.image}`}
                       className="w-[300px] mr-10 align-bottom"
                     ></Img>
                   </Column>

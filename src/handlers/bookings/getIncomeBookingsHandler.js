@@ -10,6 +10,7 @@ const getIncomeBookingsHandler = async (data, res) => {
     const currentDate = new Date();
 
     const whereCondition = {
+      isActive: true,
       stateBooking: {
         [Op.ne]: "canceled",
       },

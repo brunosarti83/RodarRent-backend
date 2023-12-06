@@ -21,6 +21,7 @@ const getFutureBookingsHandler = async (req, res) => {
         [sequelize.fn('COUNT', sequelize.col('id')), 'count'],
       ],
       where: {
+        isActive: true,
         startDate: {
           [Op.gte]: `${nextMonthYear}-${nextMonth
             .toString()

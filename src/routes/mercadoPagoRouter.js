@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const createOrder = require("../controllers/mercadoPago");
 const receiveWebhook = require("../controllers/receiveWebhook");
-const { Booking, Pay, Customer, Vehicle, Location } = require("../db");
+const { Booking, Pay } = require("../db");
 require("dotenv").config();
 const {
   updateBookingHandler,
@@ -12,12 +12,21 @@ const { CLIENT_URL, BACKEND_URL } = process.env;
 
 const router = Router();
 
+// flow is > createOrder(receives req from Client, setsUp payLink) > 
+// webhooks(expects payment, when received creates pay on db) > 
+// success(receives pay updates booking) / failure  
+
+// >>>> whatch out !! success only executes when Back To Site clicked by user
+
+// createorder starts cycle (could change name)
 router.get("/createorder", createOrder);
-// si el pago se aprueba deberia enviarlo de vuelta a la pagina RodarRent
+
+// from createorder if success : (this could be separate controller)
 router.get("/success", async (req, res, next) => {
+  // receives payment_id from query
   const { query } = req;
   const idMP = parseInt(query.payment_id, 10);
-
+  
   const pay = await Pay.findOne({
     where: {
       idMP,
@@ -26,40 +35,21 @@ router.get("/success", async (req, res, next) => {
       {
         model: Booking,
         include: [
-          {
-            model: Customer,
-          },
+          { association: 'Customer' },
+          { association: 'Vehicle' },
+          { association: 'pickUpLocation'},
+          { association: 'returnLocation' },
         ],
       },
     ],
   });
-
-  //console.log(pay.Booking.dataValues.id);
+  
   if (pay && pay.Booking) {
     await updateBookingHandler(
-      { stateBooking: "confirmed" },
+      { stateBooking: "confirmed", isActive: true },
       pay.Booking.dataValues.id
     );
-    //console.log(pay.Booking.dataValues);
-    const vehicle = await Vehicle.findOne({
-      where: {
-        id: pay.Booking.dataValues.VehicleId,
-      },
-    });
-    //console.log(vehicle);
-    const pickUpLocation = await Location.findOne({
-      where: {
-        id: pay.Booking.dataValues.pickUpLocationId,
-      },
-    });
-    //console.log(pickUpLocation.dataValues.alias);
-    const returnLocation = await Location.findOne({
-      where: {
-        id: pay.Booking.dataValues.returnLocationId,
-      },
-    });
 
-    //console.log(returnLocation);
     const data = {
       toEmailAddress: pay.Booking.dataValues.Customer.email,
       subject: "Reservation Confirmed",
@@ -69,14 +59,18 @@ router.get("/success", async (req, res, next) => {
       bookingId: pay.Booking.dataValues.id,
       startDate: pay.Booking.dataValues.startDate,
       finishDate: pay.Booking.dataValues.finishDate,
-      pickUpLocation: pickUpLocation,
-      returnLocation: returnLocation,
-      vehicle: vehicle,
+      pickUpLocation: pay.Booking.dataValues.pickUpLocation,
+      returnLocation: pay.Booking.dataValues.returnLocation,
+      vehicle: pay.Booking.dataValues.Vehicle,
       customer: pay.Booking.dataValues.Customer,
     };
-    //console.log(data);
+
+    // sends confirmation email to user
     await axios.post(`${BACKEND_URL}/sendemail`, data);
+
+    // redirects user to frontend/customer/:customerId
     res.redirect(`${CLIENT_URL}/customer/${pay.Booking.dataValues.CustomerId}`);
+
   } else if (pay) {
     next(
       new Error(

@@ -3,7 +3,7 @@ const { User } = require("../../db");
 
 const createUserHandler = async (data) => {
   const { role } = data;
-  console.log(role);
+  //console.log(role);
 
   const user = await User.create({
     role,
