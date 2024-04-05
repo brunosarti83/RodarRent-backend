@@ -11,8 +11,8 @@ conn.sync({ force: false }).then(async () => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
     performHealthCheck();
     //sendEmailsToCustomers();
-    updateBookingStatus();
-    //setInterval(performHealthCheck, 60000);
+    //updateBookingStatus();
+    setInterval(performHealthCheck, 60000);
     //setInterval(sendEmailsToCustomers, 24 * 60 * 60 * 1000);
     //setInterval(updateBookingStatus, 24 * 60 * 60 * 1000);
   });
